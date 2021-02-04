@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./burger.module.css";
-import BurgerIngredient from "./BurgerIngrident/BurgerIngrident";
+import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 
 const burger = (props) => {
   let transformedIngredients = Object.keys(props.ingredients)
@@ -12,7 +12,6 @@ const burger = (props) => {
     .reduce((arr, curr) => {
       return arr.concat(curr);
     }, []);
-
   if (transformedIngredients.length === 0) {
     transformedIngredients = <p>Please start adding ingredients</p>;
   }
