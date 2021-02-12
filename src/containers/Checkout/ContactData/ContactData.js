@@ -17,6 +17,10 @@ class ContactData extends Component {
           placeholder: "Your name",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
       },
       street: {
         elementType: "input",
@@ -25,6 +29,10 @@ class ContactData extends Component {
           placeholder: "Your street",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
       },
       postcode: {
         elementType: "input",
@@ -33,6 +41,11 @@ class ContactData extends Component {
           placeholder: "Your postcode",
         },
         value: "",
+        validation: {
+          required: true,
+          minLength: 4,
+        },
+        valid: false,
       },
       country: {
         elementType: "input",
@@ -41,6 +54,10 @@ class ContactData extends Component {
           placeholder: "Your country",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
       },
       email: {
         elementType: "input",
@@ -49,6 +66,10 @@ class ContactData extends Component {
           placeholder: "Your email",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
       },
       deliveryMethod: {
         elementType: "select",
@@ -59,6 +80,7 @@ class ContactData extends Component {
           ],
         },
         value: "",
+        valid: false,
       },
     },
     loading: false,
@@ -89,17 +111,49 @@ class ContactData extends Component {
       });
   };
 
+  checkValidity(value, rules) {
+    console.log("checking");
+    let isValid = false;
+    if (rules.required) {
+      isValid = value.trim() !== "";
+    }
+
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength;
+    }
+
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength;
+    }
+    return isValid;
+  }
+
   inputChangedHandler = (event, inputIdentifier) => {
-    const { value } = event.target;
-    this.setState((prevState) => ({
-      orderForm: {
-        ...prevState.orderForm,
-        [inputIdentifier]: {
-          ...prevState.orderForm[inputIdentifier],
-          value,
-        },
-      },
-    }));
+    // const { value } = event.target;
+    // this.setState((prevState) => ({
+    //   orderForm: {
+    //     ...prevState.orderForm,
+    //     [inputIdentifier]: {
+    //       ...prevState.orderForm[inputIdentifier],
+    //       value,
+    //       valid: this.checkValidity(
+    //         value,
+    //         prevState.orderForm[inputIdentifier].validation
+    //       ),
+    //     },
+    //   },
+    // }));
+    // console.log(this.state);
+    const updatedOrderForm = { ...this.state.orderForm };
+    const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
+    updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = this.checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
+    updatedOrderForm[inputIdentifier] = updatedFormElement;
+    this.setState({ orderForm: updatedOrderForm });
+    console.log(this.state.orderForm);
   };
 
   render() {
@@ -122,9 +176,7 @@ class ContactData extends Component {
             changed={(event) => this.inputChangedHandler(event, formElement.id)}
           />
         ))}
-        <Button btnType="Success" clicked={this.orderHandler}>
-          Order
-        </Button>
+        <Button btnType="Success">Order</Button>
       </form>
     );
     if (this.state.loading) form = <Spinner />;
