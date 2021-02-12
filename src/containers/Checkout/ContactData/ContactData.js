@@ -21,6 +21,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       street: {
         elementType: "input",
@@ -33,6 +34,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       postcode: {
         elementType: "input",
@@ -46,6 +48,7 @@ class ContactData extends Component {
           minLength: 4,
         },
         valid: false,
+        touched: false,
       },
       country: {
         elementType: "input",
@@ -58,6 +61,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       email: {
         elementType: "input",
@@ -70,6 +74,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       deliveryMethod: {
         elementType: "select",
@@ -131,30 +136,31 @@ class ContactData extends Component {
   }
 
   inputChangedHandler = (event, inputIdentifier) => {
-    const { value } = event.target;
-    this.setState((prevState) => ({
-      orderForm: {
-        ...prevState.orderForm,
-        [inputIdentifier]: {
-          ...prevState.orderForm[inputIdentifier],
-          value,
-          valid: this.checkValidity(
-            value,
-            prevState.orderForm[inputIdentifier].validation
-          ),
-        },
-      },
-    }));
-    console.log(this.state);
-    // const updatedOrderForm = { ...this.state.orderForm };
-    // const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
-    // updatedFormElement.value = event.target.value;
-    // updatedFormElement.valid = this.checkValidity(
-    //   updatedFormElement.value,
-    //   updatedFormElement.validation
-    // );
-    // updatedOrderForm[inputIdentifier] = updatedFormElement;
-    // this.setState({ orderForm: updatedOrderForm });
+    // const { value } = event.target;
+    // this.setState((prevState) => ({
+    //   orderForm: {
+    //     ...prevState.orderForm,
+    //     [inputIdentifier]: {
+    //       ...prevState.orderForm[inputIdentifier],
+    //       value,
+    //       valid: this.checkValidity(
+    //         value,
+    //         prevState.orderForm[inputIdentifier].validation
+    //       ),
+    //     },
+    //   },
+    // }));
+    const updatedOrderForm = { ...this.state.orderForm };
+    const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
+    updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = this.checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
+    updatedFormElement.touched = true;
+    updatedOrderForm[inputIdentifier] = updatedFormElement;
+    console.log(updatedOrderForm[inputIdentifier]);
+    this.setState({ orderForm: updatedOrderForm });
   };
 
   render() {
@@ -176,6 +182,7 @@ class ContactData extends Component {
             value={formElement.config.value}
             invalid={!formElement.config.valid}
             shouldValidate={formElement.config.validation}
+            touched={formElement.config.touched}
             changed={(event) => this.inputChangedHandler(event, formElement.id)}
           />
         ))}
