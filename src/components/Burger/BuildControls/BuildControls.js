@@ -30,9 +30,8 @@ const buildControls = (props) => (
 );
 
 const mapStateToProps = (state) => {
-  console.log(Object.keys(state.ingredients));
   return {
-    controls: Object.keys(state.ingredients),
+    controls: Object.keys(state.burgerBuilder.ingredients),
   };
 };
 
