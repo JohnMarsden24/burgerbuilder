@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import axios from "../../axios-orders";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
 
@@ -11,22 +10,14 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
+import axios from "../../axios-orders";
 
 class BurgerBuilder extends Component {
   state = {
     purchasing: false,
-    loading: false,
-    error: false,
   };
 
-  componentDidMount() {
-    // axios
-    //   .get("/ingredients.json")
-    //   .then((response) => {
-    //     this.setState({ ingredients: response.data });
-    //   })
-    //   .catch((error) => this.setState({ error: true }));
-  }
+  componentDidMount() {}
 
   updatePurchaseState = () =>
     Object.values(this.props.ingredients).some((quantity) => quantity > 0);
@@ -120,10 +111,6 @@ class BurgerBuilder extends Component {
           price={this.props.totalPrice}
         />
       );
-    }
-
-    if (this.state.loading) {
-      orderSummary = <Spinner />;
     }
 
     return (
