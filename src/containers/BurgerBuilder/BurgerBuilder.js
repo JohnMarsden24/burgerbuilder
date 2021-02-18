@@ -28,7 +28,10 @@ class BurgerBuilder extends Component {
 
   purchaseCancelHandler = () => this.setState({ purchasing: false });
 
-  purchaseContinueHandler = () => this.props.history.push("/checkout");
+  purchaseContinueHandler = () => {
+    this.props.onInitPurchase();
+    this.props.history.push("/checkout");
+  };
 
   /* NOT NEEDED AS USING REDUX
      addIngredientHandler = (type) => {
@@ -144,6 +147,7 @@ const mapDispatchToProps = (dispatch) => {
     onIngredientRemove: (ingredientName) =>
       dispatch(actions.removeIngredient(ingredientName)),
     onInitIngredients: () => dispatch(actions.initIngredients()),
+    onInitPurchase: () => dispatch(actions.purchaseInit()),
   };
 };
 
