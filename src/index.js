@@ -8,7 +8,7 @@ import "./index.css";
 
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import reducer from "./store/reducers/reducer";
+import reducer from "./store/reducers/burgerBuilder";
 
 const store = createStore(
   reducer,
