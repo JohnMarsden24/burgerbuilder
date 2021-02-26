@@ -7,6 +7,7 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../../store/actions/index";
+import { updateObject } from "../../../shared/utility";
 
 import classes from "./ContactData.module.css";
 
@@ -133,29 +134,22 @@ class ContactData extends Component {
   }
 
   inputChangedHandler = (event, inputIdentifier) => {
-    // const { value } = event.target;
-    // this.setState((prevState) => ({
-    //   orderForm: {
-    //     ...prevState.orderForm,
-    //     [inputIdentifier]: {
-    //       ...prevState.orderForm[inputIdentifier],
-    //       value,
-    //       valid: this.checkValidity(
-    //         value,
-    //         prevState.orderForm[inputIdentifier].validation
-    //       ),
-    //     },
-    //   },
-    // }));
-    const updatedOrderForm = { ...this.state.orderForm };
-    const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
-    updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(
-      updatedFormElement.value,
-      updatedFormElement.validation
+    const updatedFormElement = updateObject(
+      this.state.orderForm[inputIdentifier],
+      {
+        value: event.target.value,
+        valid: this.checkValidity(
+          this.state.orderForm[inputIdentifier].value,
+          this.state.orderForm[inputIdentifier].validation
+        ),
+        touched: true,
+      }
     );
-    updatedFormElement.touched = true;
-    updatedOrderForm[inputIdentifier] = updatedFormElement;
+
+    const updatedOrderForm = updateObject(this.state.orderForm, {
+      [inputIdentifier]: updatedFormElement,
+    });
+
     const formIsValid = Object.values(updatedOrderForm).every(
       (value) => value.valid
     );
